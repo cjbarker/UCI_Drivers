@@ -1,0 +1,19 @@
+Using AVRTools to Compile Code
+-----------------------------------
+1) Open new project AVRCC
+2) No new file or folder
+3) Map to Simulator -> Atmeg2560
+4) Open existing source code
+5) Rebuild All
+6) To load on board hit connect button, USB
+7) Locate lab1.hex file and select "Program" button in FLASH (eprom is for data)
+   If all goes well it will be "OK" and leave programming mode
+   At this point in time everything is loaded into your board.
+   Now, when you load it into your board how does it run what do the lights do.
+
+8) Now change the optimization to None and rebuild.  (See project Configuration options - optimization OO no optimization)
+9) Reload program back into board and see what it does, connect to board, program then see what LEDs do.  Let it run for about a minute or so.
+   Tell Aaron and the class in the difference between the lights (the differences are in the keyword volitaile)
+   WHERE does volitale need to be added to make lab1 work consistently, why is volitale important and why does optimization make a difference.
+
+Stopped @ 5:10 mins
