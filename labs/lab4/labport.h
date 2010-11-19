@@ -25,7 +25,7 @@
 /* if each address is how far apart each register is in memory */
 #define ADDR_MULTIPLIER	  1
 
-#define BASE_ADDRESS	0	/* base address of the device */
+#define BASE_ADDRESS	0x20	/* base address of the device */
 
 /* global interrupt */
 #define enable_interrupt()	__asm__ __volatile__ ("sei" ::)

@@ -100,7 +100,7 @@
  * ******************************* */
 
 /* Port B data register - how we read or write registers*/
-#define PORTB	0x25	/* memory location */
+#define PORTB	0x05	/* memory location */
 #define PORTB7	(1<<7)	/* R/W */
 #define PORTB6	(1<<6)	/* R/W */
 #define PORTB5 	(1<<5)	/* R/W */
@@ -111,7 +111,7 @@
 #define PORTB0 	(1<<0)	/* R/W */
 
 /* Port C data register - how we read or write registers*/
-#define PORTC	0x28	/* memory location */
+#define PORTC	0x08	/* memory location */
 #define PORTC7	(1<<7)	/* R/W */
 #define PORTC6	(1<<6)	/* R/W */
 #define PORTC5 	(1<<5)	/* R/W */
@@ -122,7 +122,7 @@
 #define PORTC0 	(1<<0)	/* R/W */
 
 /* Port D data register - how we read or write registers*/
-#define PORTD	0x2B	/* memory location */
+#define PORTD	0x0B	/* memory location */
 #define PORTD7	(1<<7)	/* R/W */
 #define PORTD6	(1<<6)	/* R/W */
 #define PORTD5 	(1<<5)	/* R/W */
@@ -133,7 +133,7 @@
 #define PORTD0 	(1<<0)	/* R/W */
 
 /* Port B data direction register - determines if input or output */
-#define DDRB	0x24	/* memory location */
+#define DDRB	0x04	/* memory location */
 #define DDB7	(1<<7)	/* R/W */
 #define DDB6	(1<<6)	/* R/W */
 #define DDB5 	(1<<5)	/* R/W */
@@ -144,7 +144,7 @@
 #define DDB0 	(1<<0)	/* R/W */
 
 /* Port C data direction register - determines if input or output */
-#define DDRC	0x27	/* memory location */
+#define DDRC	0x07	/* memory location */
 #define DDC7	(1<<7)	/* R/W */
 #define DDC6	(1<<6)	/* R/W */
 #define DDC5 	(1<<5)	/* R/W */
@@ -155,7 +155,7 @@
 #define DDC0 	(1<<0)	/* R/W */
 
 /* Port D data direction register - determines if input or output */
-#define DDRD	0x2A	/* memory location */
+#define DDRD	0x0A	/* memory location */
 #define DDD7	(1<<7)	/* R/W */
 #define DDD6	(1<<6)	/* R/W */
 #define DDD5 	(1<<5)	/* R/W */
@@ -166,7 +166,7 @@
 #define DDD0 	(1<<0)	/* R/W */
 
 /* PIN B input pins address - when we read the value (make it work) */
-#define PINB	0x23	/* memory location */
+#define PINB	0x03	/* memory location */
 #define PINB7	(1<<7)	/* R/W */
 #define PINB6	(1<<6)	/* R/W */
 #define PINB5 	(1<<5)	/* R/W */
@@ -177,7 +177,7 @@
 #define PINB0 	(1<<0)	/* R/W */
 
 /* PIN C input pins address - when we read the value (make it work) */
-#define PINC	0x26	/* memory location */
+#define PINC	0x06	/* memory location */
 #define PINC7	(1<<7)	/* R/W */
 #define PINC6	(1<<6)	/* R/W */
 #define PINC5 	(1<<5)	/* R/W */
@@ -188,7 +188,7 @@
 #define PINC0 	(1<<0)	/* R/W */
 
 /* PIN D input pins address - when we read the value (make it work) */
-#define PIND	0x29	/* memory location */
+#define PIND	0x09	/* memory location */
 #define PIND7	(1<<7)	/* R/W */
 #define PIND6	(1<<6)	/* R/W */
 #define PIND5 	(1<<5)	/* R/W */
@@ -207,14 +207,14 @@
 
 /* EEPROM address register high byte */
 /* Note - Bits 15:12 are reserved and always read as zero */
-#define EEARH	0x42	/* memory location */
+#define EEARH	0x22	/* memory location */
 #define EEAR11	(1<<11)	/* R/W */
 #define EEAR10	(1<<10)	/* R/W */
 #define EEAR9	(1<<9)	/* R/W */
 #define EEAR8	(1<<8)	/* R/W */
 
 /* EEPROM address register low byte */
-#define EEARL	0x41	/* memory location */
+#define EEARL	0x21	/* memory location */
 #define EEAR7	(1<<7)	/* R/W */
 #define EEAR6	(1<<6)	/* R/W */
 #define EEAR5	(1<<5)	/* R/W */
@@ -226,13 +226,13 @@
 
 /* EEPROM data register (data to be written/read to/from EEPROM) */
 /* NOTE - BIG ENDIAN ORDER */
-#define EEDR	0x40	/* memory location */
+#define EEDR	0x20	/* memory location */
 #define EEDRMSB (1<<7)	/* R/W */
 #define EEDRLSB (1<<0)  /* R/W */
 
 /* EEPROM control register () */
 /* Note - Bits 7:6 are reserved and always read as zero */
-#define EECR	0x3F	/* memory location */
+#define EECR	0x1F	/* memory location */
 #define EEPM1	(1<<5)	/* R/W */
 #define EEPM0	(1<<4)	/* R/W */
 #define EEPM0	(1<<4)	/* R/W */
@@ -247,7 +247,7 @@
  * ********************************** */
 
 /* AVR Status Register */
-#define SREG	0x5F	/* memory location */
+#define SREG	0x3F	/* memory location */
 #define I		(1<<7)	/* R/W */
 #define T		(1<<6)	/* R/W */
 #define H		(1<<5)	/* R/W */
@@ -258,7 +258,7 @@
 #define C		(1<<0)	/* R/W */
 
 /* External Interrupt */
-#define EIMSK	0x3D	/* memory location */
+#define EIMSK	0x1D	/* memory location */
 #define INT7	(1<<7)	/* R/W */
 #define INT6	(1<<6)	/* R/W */
 #define INT5	(1<<5)	/* R/W */
@@ -268,7 +268,7 @@
 #define INT1	(1<<1)	/* R/W */
 #define INT0	(1<<0)	/* R/W */
 
-#define EICRA   0x69	/* memory location */
+#define EICRA   0x49	/* memory location */
 #define ISC31	(1<<7)	/* R/W */
 #define ISC30	(1<<6)	/* R/W */
 #define ISC21	(1<<5)	/* R/W */
@@ -278,7 +278,7 @@
 #define ISC01	(1<<1)	/* R/W */
 #define ISC00	(1<<0)	/* R/W */
 
-#define EICRB   0x6A	/* memory location */
+#define EICRB   0x4A	/* memory location */
 #define ISC71	(1<<7)	/* R/W */
 #define ISC70	(1<<6)	/* R/W */
 #define ISC61	(1<<5)	/* R/W */
@@ -294,7 +294,7 @@
  * ****************************** */
 
 /* Watchdog Timer Control Register */
-#define WDTCSR	0x60	/* memory location */
+#define WDTCSR	0x40	/* memory location */
 #define WDIF	(1<<7)	/* R/W */
 #define WDIE	(1<<6)	/* R/W */
 #define WDP3	(1<<5)	/* R/W */
@@ -305,7 +305,7 @@
 #define WDP0	(1<<0)	/* R/W */
 
 /* Timer/Counter 0 Control Register A */
-#define TCCR0A	0x44	/* memory location */
+#define TCCR0A	0x24	/* memory location */
 #define COM0A1	(1<<7)	/* R/W */
 #define COM0A0	(1<<6)	/* R/W */
 #define COM0B1	(1<<5)	/* R/W */
@@ -314,7 +314,7 @@
 #define WGM00	(1<<0)	/* R/W */
 
 /* Timer/Counter 0 Control Register B */
-#define TCCR0B	0x45	/* memory location */
+#define TCCR0B	0x25	/* memory location */
 #define FOC0A	(1<<7)	/* R/W */
 #define FOC0B	(1<<6)	/* R/W */
 #define WGM02	(1<<3)	/* R/W */
@@ -323,22 +323,22 @@
 #define CS00	(1<<0)	/* R/W */
 
 /* Timer/Counter Register */
-#define TCNT0	0x46	/* memory location */
+#define TCNT0	0x26	/* memory location */
 
 /* Timer/Counter Interrupt Mask Register */
-#define TIMSK0	0x6E	/* memory location */
+#define TIMSK0	0x4E	/* memory location */
 #define OCF0B	(1<<2)	/* R/W */
 #define OCF0A	(1<<1)	/* R/W */
 #define TOV0	(1<<0)	/* R/W */
 
 /* Timer/Counter 0 Interrupt Flag Register */
-#define TIFR0	0x35	/* memory location */
+#define TIFR0	0x15	/* memory location */
 #define OCIE0B	(1<<2)	/* R/W */
 #define OCIE0A	(1<<1)	/* R/W */
 #define TOIE0	(1<<0)	/* R/W */
 
 /* Timer/Counter 1 Control Register A */
-#define TCCR1A	0x80	/* memory location */
+#define TCCR1A	0x60	/* memory location */
 #define COM1A1	(1<<7)	/* R/W */
 #define COM1A0	(1<<6)	/* R/W */
 #define COM1B1	(1<<5)	/* R/W */
@@ -349,7 +349,7 @@
 #define WGM10	(1<<0)	/* R/W */
 
 /* Timer/Counter 3 Control Register A */
-#define TCCR3A	0x90	/* memory location */
+#define TCCR3A	0x70	/* memory location */
 #define COM3A1	(1<<7)	/* R/W */
 #define COM3A0	(1<<6)	/* R/W */
 #define COM3B1	(1<<5)	/* R/W */
@@ -360,7 +360,7 @@
 #define WGM30	(1<<0)	/* R/W */
 
 /* Timer/Counter 4 Control Register A */
-#define TCCR4A	0xA0	/* memory location */
+#define TCCR4A	0x80	/* memory location */
 #define COM4A1	(1<<7)	/* R/W */
 #define COM4A0	(1<<6)	/* R/W */
 #define COM4B1	(1<<5)	/* R/W */
@@ -371,7 +371,7 @@
 #define WGM40	(1<<0)	/* R/W */
 
 /* Timer/Counter 5 Control Register A */
-#define TCCR5A	0xA0	/* memory location */
+#define TCCR5A	0x100	/* memory location */
 #define COM5A1	(1<<7)	/* R/W */
 #define COM5A0	(1<<6)	/* R/W */
 #define COM5B1	(1<<5)	/* R/W */
@@ -382,7 +382,7 @@
 #define WGM50	(1<<0)	/* R/W */
 
 /* Timer/Counter 1 Control Register B */
-#define TCCR1B	0x81	/* memory location */
+#define TCCR1B	0x61	/* memory location */
 #define ICNC1	(1<<7)	/* R/W */
 #define ICES1	(1<<6)	/* R/W */
 #define WGM13	(1<<4)	/* R/W */
@@ -392,7 +392,7 @@
 #define CS10	(1<<0)	/* R/W */
 
 /* Timer/Counter 3 Control Register B */
-#define TCCR3B	0x91	/* memory location */
+#define TCCR3B	0x71	/* memory location */
 #define ICNC3	(1<<7)	/* R/W */
 #define ICES3	(1<<6)	/* R/W */
 #define WGM33	(1<<4)	/* R/W */
@@ -402,7 +402,7 @@
 #define CS30	(1<<0)	/* R/W */
 
 /* Timer/Counter 4 Control Register B */
-#define TCCR4B	0xA1	/* memory location */
+#define TCCR4B	0x81	/* memory location */
 #define ICNC4	(1<<7)	/* R/W */
 #define ICES4	(1<<6)	/* R/W */
 #define WGM43	(1<<4)	/* R/W */
@@ -412,7 +412,7 @@
 #define CS40	(1<<0)	/* R/W */
 
 /* Timer/Counter 5 Control Register B */
-#define TCCR5B	0x121	/* memory location */
+#define TCCR5B	0x101	/* memory location */
 #define ICNC5	(1<<7)	/* R/W */
 #define ICES5	(1<<6)	/* R/W */
 #define WGM53	(1<<4)	/* R/W */
@@ -422,47 +422,47 @@
 #define CS50	(1<<0)	/* R/W */
 
 /* Timer/Counter 1 Control Register C */
-#define TCCR1C	0x82	/* memory location */
+#define TCCR1C	0x62	/* memory location */
 #define FOC1A	(1<<7)	/* W */
 #define FOC1B	(1<<6)	/* W */
 #define FOC1C	(1<<5)	/* W */
 
 /* Timer/Counter 3 Control Register C */
-#define TCCR3C	0x92	/* memory location */
+#define TCCR3C	0x72	/* memory location */
 #define FOC3A	(1<<7)	/* W */
 #define FOC3B	(1<<6)	/* W */
 #define FOC3C	(1<<5)	/* W */
 
 /* Timer/Counter 4 Control Register C */
-#define TCCR4C	0xA2	/* memory location */
+#define TCCR4C	0x82	/* memory location */
 #define FOC4A	(1<<7)	/* W */
 #define FOC4B	(1<<6)	/* W */
 #define FOC4C	(1<<5)	/* W */
 
 /* Timer/Counter 5 Control Register C */
-#define TCCR5C	0x122	/* memory location */
+#define TCCR5C	0x102	/* memory location */
 #define FOC5A	(1<<7)	/* W */
 #define FOC5B	(1<<6)	/* W */
 #define FOC5C	(1<<5)	/* W */
 
 /* Timer/Counter 1 */
-#define TCNT1H	0x85	/* memory location */
-#define TCNT1L	0x84	/* memory location */
+#define TCNT1H	0x65	/* memory location */
+#define TCNT1L	0x64	/* memory location */
 
 /* Timer/Counter 3 */
-#define TCNT3H	0x95	/* memory location */
-#define TCNT3L	0x94	/* memory location */
+#define TCNT3H	0x75	/* memory location */
+#define TCNT3L	0x74	/* memory location */
 
 /* Timer/Counter 4 */
-#define TCNT4H	0xA5	/* memory location */
-#define TCNT4L	0xA4	/* memory location */
+#define TCNT4H	0x85	/* memory location */
+#define TCNT4L	0x84	/* memory location */
 
 /* Timer/Counter 5 */
-#define TCNT5H	0x125	/* memory location */
-#define TCNT5L	0x124	/* memory location */
+#define TCNT5H	0x105	/* memory location */
+#define TCNT5L	0x104	/* memory location */
 
 /* Timer/Counter 1 Interrupt Mask Register */
-#define TIMSK1	0x6F	/* memory location */
+#define TIMSK1	0x4F	/* memory location */
 #define ICIE1	(1<<5>	/* R/W */
 #define OCIE1C	(1<<3)	/* R/W */
 #define OCIE1B	(1<<2)	/* R/W */
@@ -470,7 +470,7 @@
 #define TOIE1	(1<<0)	/* R/W */
 
 /* Timer/Counter 3 Interrupt Mask Register */
-#define TIMSK3	0x71	/* memory location */
+#define TIMSK3	0x51	/* memory location */
 #define ICIE3	(1<<5>	/* R/W */
 #define OCIE3C	(1<<3)	/* R/W */
 #define OCIE3B	(1<<2)	/* R/W */
@@ -478,7 +478,7 @@
 #define TOIE3	(1<<0)	/* R/W */
 
 /* Timer/Counter 4 Interrupt Mask Register */
-#define TIMSK4	0x72	/* memory location */
+#define TIMSK4	0x52	/* memory location */
 #define ICIE4	(1<<5>	/* R/W */
 #define OCIE4C	(1<<3)	/* R/W */
 #define OCIE4B	(1<<2)	/* R/W */
@@ -486,7 +486,7 @@
 #define TOIE4	(1<<0)	/* R/W */
 
 /* Timer/Counter 5 Interrupt Mask Register */
-#define TIMSK5	0x73	/* memory location */
+#define TIMSK5	0x53	/* memory location */
 #define ICIE5	(1<<5>	/* R/W */
 #define OCIE5C	(1<<3)	/* R/W */
 #define OCIE5B	(1<<2)	/* R/W */
@@ -494,7 +494,7 @@
 #define TOIE5	(1<<0)	/* R/W */
 
 /* Timer/Counter 1 Interrupt Flag Register */
-#define TIFR1	0x36	/* memory location */
+#define TIFR1	0x16	/* memory location */
 #define ICF1	(1<<5>	/* R/W */
 #define OCF1C	(1<<3)	/* R/W */
 #define OCF1B	(1<<2)	/* R/W */
@@ -502,7 +502,7 @@
 #define TOV1	(1<<0)	/* R/W */
 
 /* Timer/Counter 3 Interrupt Flag Register */
-#define TIFR3	0x38	/* memory location */
+#define TIFR3	0x18	/* memory location */
 #define ICF3	(1<<5>	/* R/W */
 #define OCF3C	(1<<3)	/* R/W */
 #define OCF3B	(1<<2)	/* R/W */
@@ -510,7 +510,7 @@
 #define TOV3	(1<<0)	/* R/W */
 
 /* Timer/Counter 4 Interrupt Flag Register */
-#define TIFR4	0x39	/* memory location */
+#define TIFR4	0x19	/* memory location */
 #define ICF4	(1<<5>	/* R/W */
 #define OCF4C	(1<<3)	/* R/W */
 #define OCF4B	(1<<2)	/* R/W */
@@ -518,48 +518,27 @@
 #define TOV4	(1<<0)	/* R/W */
 
 /* Timer/Counter 5 Interrupt Flag Register */
-#define TIFR5	0x3A	/* memory location */
+#define TIFR5	0x1A	/* memory location */
 #define ICF5	(1<<5>	/* R/W */
 #define OCF5C	(1<<3)	/* R/W */
 #define OCF5B	(1<<2)	/* R/W */
 #define OCF5A	(1<<1)	/* R/W */
 #define TOV5	(1<<0)	/* R/W */
 
-/* Timer/Counter Control Register A */
-#define TCCR2A	0xB0	/* memory location */
-#define COM2A1	(1<<7>	/* R/W */
-#define COM2A0	(1<<6)	/* R/W */
-#define COM2B1	(1<<5)	/* R/W */
-#define COM2B0	(1<<4)	/* R/W */
-#define WGM21	(1<<1)	/* R/W */
-#define WGM20	(1<<0)	/* R/W */
-
-/* Timer/Counter Control Register B */
-#define TCCR2B	0xB1	/* memory location */
-#define FOC2A	(1<<7>	/* R/W */
-#define FOC2B	(1<<6)	/* R/W */
-#define WGM22	(1<<3)	/* R/W */
-#define CS22	(1<<2)	/* R/W */
-#define CS21	(1<<1)	/* R/W */
-#define CS20	(1<<0)	/* R/W */
-
-/* Timer/Counter Register */
-#define TCNT2	0xB2	/* memory location */
-
 /* Timer/Counter2 Interrupt Mask Register */
-#define TIMSK2	0x70	/* memory location */
+#define TIMSK2	0x50	/* memory location */
 #define OCIE2B	(1<<2)	/* R/W */
 #define OCIE2A	(1<<1)	/* R/W */
 #define TOIE2	(1<<0)	/* R/W */
 
 /* Timer/Counter2 Interrupt Flag Register */
-#define TIFR2	0x37	/* memory location */
+#define TIFR2	0x17	/* memory location */
 #define OCF2B	(1<<2)	/* R/W */
 #define OCF2A	(1<<1)	/* R/W */
 #define TOV2	(1<<0)	/* R/W */
 
 /* General Timer/Counter Control Register */
-#define GTCCR	0x43	/* memory location */
+#define GTCCR	0x23	/* memory location */
 #define TSM		(1<<7)	/* R/W */
 #define PSRASY	(1<<1)	/* R/W */
 #define PSRSYNC	(1<<0)	/* R/W */
