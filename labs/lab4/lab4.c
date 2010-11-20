@@ -21,6 +21,8 @@
 
 #define TOTAL_LEDS 	8
 #define LED_DELAY 	15
+#define FOSC 		1							/* System Oscillator of Clock Frequency in MHz */
+#define BAUD_RATE	9600ul						/* Bits Per Second - ul need to denote unsigned long*/
 
 volatile UINT32 gCurrLed = 0;		/* current active LED to light */
 volatile UINT32 gTimeCounter = 0; 	/* used for timer to achieve 1Hz */
@@ -55,6 +57,20 @@ void initTimer(void)
 	enable_interrupt();				/* global interrupts */
 }
 
+void initUSART(void) 
+{
+	/* Initialize normal asynchronous interrupt driven USART #0 Receiver */
+	/* see page 208 and 227 for calculating the baud rate */
+	writeReg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn );	/* enable complete interrupts, data empty interrupt, and receiver mode */
+	writeReg(UCSR0C, UCSZn1 | UCSZn0);						/* 8 bit character size for frame used by transmitter and receiver */
+
+	/* Baud Rate */		
+	writeReg(UBRR0L, (UINT8)((FOSC / (16*BAUD_RATE))-1));		/* Equals 6 on 9600 bps 1.0 MHz System */
+	writeReg(UBRR0H, (UINT8)(((FOSC / (16*BAUD_RATE))-1)>>8));
+
+	enable_interrupt();				/* global interrupts */
+}
+
 void timerHandler(void)
 {
 	/* Timer 0 overlow interrupt */
@@ -79,6 +95,7 @@ void __vector_23 (void)
 int main(void)
 {
 	initTimer();			/* setup and start timer */
+	initUSART();			/* setup USART */
 
 	writeReg(DDRB, 0xff);	/* enable output mode for all pins - control LEDs on PORTB */
 	writeReg(DDRD, 0);		/* enable input mode for all pins on PORTD */

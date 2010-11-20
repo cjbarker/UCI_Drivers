@@ -21,8 +21,39 @@
 
 /* USART I/O Data Register n */
 
-/* USAR Control and Status Register A */
-#define UCSRnA
+/* USART 0 */ 
+#define UDR0    0xA6	/* memory location */
+#define UCSR0A  0xA0	/* memory location */
+#define UCSR0B  0xA1	/* memory location */
+#define UCSR0C  0xA2	/* memory location */
+#define UBRR0L  0xA4	/* memory location */
+#define UBRR0H  0xA5	/* memory location */
+
+/* USART 1 */
+#define UDR1    0xAE	/* memory location */
+#define UCSR1A  0xA8	/* memory location */
+#define UCSR1B  0xA9	/* memory location */
+#define UCSR1C  0xAA	/* memory location */
+#define UBRR1L  0xAC	/* memory location */
+#define UBRR1H  0xAD	/* memory location */
+
+/* USART 2 */
+#define UDR2    0xB6	/* memory location */
+#define UCSR2A  0xB0	/* memory location */
+#define UCSR2B  0xB1	/* memory location */
+#define UCSR2C  0xB2	/* memory location */
+#define UBRR2L  0xB4	/* memory location */
+#define UBRR2H  0xB5	/* memory location */
+
+/* USART 3 */
+#define UDR3    0x116	/* memory location */
+#define UCSR3A  0x110	/* memory location */
+#define UCSR3B  0x111	/* memory location */
+#define UCSR3C  0x112	/* memory location */
+#define UBRR3L  0x114	/* memory location */
+#define UBRR3H  0x115	/* memory location */
+
+/* USART Control and Status Register A */
 #define	RXCn	(1<<7)	/* R */
 #define TXCn	(1<<6)	/* R/W */
 #define UDREn	(1<<5)	/* R */
@@ -32,9 +63,8 @@
 #define U2Xn	(1<<1)	/* R/W */
 #define MPCMn	(1<<0)	/* R/W */
 
-/* USART Control and Status Register n B */
-#define UCSRnB
-#define RXCIn	(1<<7)	/* R/W */
+/* USART Control and Status Register B */
+#define RXCIEn	(1<<7)	/* R/W */
 #define TXCIEn	(1<<6)	/* R/W */
 #define UDRIEn	(1<<5)	/* R/W */
 #define RXENn	(1<<4)	/* R/W */
@@ -43,8 +73,8 @@
 #define RXB8n	(1<<1)	/* R */
 #define TXB8n	(1<<0)	/* R/W */
 
+
 /* USART Control and Status Register n C */
-#define UCSRnC
 #define UMSELn1	(1<<7)	/* R/W */
 #define UMSELn0	(1<<6)	/* R/W */
 #define UPMn1	(1<<5)	/* R/W */
@@ -55,13 +85,10 @@
 #define UCPOLn	(1<<0)	/* R/W */
 
 /* USART Baud Rate Registers */
-#define UBRRHn
 #define UBRR11	(1<<11)
 #define UBRR10	(1<<10)
 #define UBRR9	(1<<9)
 #define UBRR8	(1<<8)
-
-#define UBRRLn
 #define UBRR7	(1<<7)
 #define UBRR6	(1<<6)
 #define UBRR5	(1<<5)
@@ -70,29 +97,6 @@
 #define UBRR2	(1<<2)
 #define UBRR1	(1<<1)
 #define UBRR0	(1<<0)
-
-/* USART MSPIM Control and Status Register n A */
-#define UCSRnA
-#define RXCn	(1<<7)	/* R/W */
-#define TXCn	(1<<6) 	/* R/W */
-#define UDREn	(1<<5) 	/* R/W */
-
-/* USART MSPIM Control and Status Register n B */
-#define UCSRnB
-#define RXCIEn	(1<<7)	/* R/W */
-#define TXCIEn	(1<<6) 	/* R/W */
-#define UDRIE	(1<<5) 	/* R/W */
-#define RXENn	(1<<4) 	/* R/W */
-#define TXENn	(1<<3) 	/* R/W */
-
-
-/* USART MSPIM Control and Status Register n C */
-#define UCSRnC
-#define UMSELn1	(1<<7)	/* R/W */
-#define UMSELn0	(1<<6) 	/* R/W */
-#define UDORDn	(1<<2) 	/* R/W */
-#define UCPHAn	(1<<1) 	/* R/W */
-#define UCPOLn	(1<<0) 	/* R/W */
 
  
 /* ******************************* *
