@@ -21,11 +21,12 @@
 
 #define TOTAL_LEDS 	8
 #define LED_DELAY 	15
-#define FOSC 		1							/* System Oscillator of Clock Frequency in MHz */
-#define BAUD_RATE	9600ul						/* Bits Per Second - ul need to denote unsigned long*/
+#define FOSC 		1									/* System Oscillator of Clock Frequency in MHz */
+#define BAUD_RATE	9600ul								/* Bits Per Second - ul need to denote unsigned long*/
 
-volatile UINT32 gCurrLed = 0;		/* current active LED to light */
-volatile UINT32 gTimeCounter = 0; 	/* used for timer to achieve 1Hz */
+volatile enum STATES { stopped=0, started } gRecState;	/* UART recording state */
+volatile UINT32 gCurrLed = 0;							/* current active LED to light */
+volatile UINT32 gTimeCounter = 0; 						/* used for timer to achieve 1Hz */
 
 BOOL switchPushed(void)
 {
@@ -60,9 +61,11 @@ void initTimer(void)
 void initUSART(void) 
 {
 	/* Initialize normal asynchronous interrupt driven USART #0 Receiver */
+	gRecState = stopped;
+
 	/* see page 208 and 227 for calculating the baud rate */
-	writeReg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn );	/* enable complete interrupts, data empty interrupt, and receiver mode */
-	writeReg(UCSR0C, UCSZn1 | UCSZn0);						/* 8 bit character size for frame used by transmitter and receiver */
+	writeReg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn );		/* enable complete interrupts, data empty interrupt, and receiver mode */
+	writeReg(UCSR0C, UCSZn1 | UCSZn0);							/* 8 bit character size for frame used by transmitter and receiver */
 
 	/* Baud Rate */		
 	writeReg(UBRR0L, (UINT8)((FOSC / (16*BAUD_RATE))-1));		/* Equals 6 on 9600 bps 1.0 MHz System */
@@ -86,10 +89,36 @@ void timerHandler(void)
 	enable_interrupt();				/* global interrupts */
 }
 
+void usartRxHandler(void)
+{
+	/* USART0 receive complete interrupt */
+
+	/* read data from buffer */
+	volatile UINT8 result;
+	writeReg(UDR0, result);
+	
+
+	/* 
+	TODO
+	1) Convert bytes to integer ASCII encoding then ASCII character
+	2) See if cntrl start or stop recording received - update gRecState
+	3) Handle start/stop accordingly if exists if not and recording store characters to EEPROM
+	4) re-enable interrupts
+	*/
+
+	enable_interrupt();				/* global interrupts */
+}
+
 void __vector_23 (void) 
 { 
 	/* timer 0 overflow */ 
 	timerHandler();
+}
+
+void __vector_26 (void) 
+{ 
+	/* USART0 receive complete */ 
+	usartRxHandler();
 }
 
 int main(void)
@@ -101,7 +130,7 @@ int main(void)
 	writeReg(DDRD, 0);		/* enable input mode for all pins on PORTD */
 	writeReg(PORTB, 0xff);	/* turn off LEDs */
 
-	/* wait for interrupt to trigger and check input switches */
+	/* wait for interrupts to trigger (timer or USART handlers) */
 	while(1)
 	{
 		/* sequentially toggle on current LED when delay met */

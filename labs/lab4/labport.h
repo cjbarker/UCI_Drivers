@@ -32,15 +32,8 @@
 #define disable_interrupt()	__asm__ __volatile__ ("cli" ::) 
 
 /* vectors in AVR are hardcoded to a function by name */
-extern void __vector_1(void) __attribute__ ((interrupt));
-extern void __vector_2(void) __attribute__ ((interrupt));
-extern void __vector_3(void) __attribute__ ((interrupt));
-extern void __vector_4(void) __attribute__ ((interrupt));
-extern void __vector_5(void) __attribute__ ((interrupt));
-extern void __vector_6(void) __attribute__ ((interrupt));
-extern void __vector_7(void) __attribute__ ((interrupt));
-extern void __vector_8(void) __attribute__ ((interrupt));
 extern void __vector_23(void) __attribute__ ((interrupt));
+extern void __vector_26(void) __attribute__ ((interrupt));
 
 
 #endif
