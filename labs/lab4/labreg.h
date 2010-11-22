@@ -228,6 +228,8 @@
 #define EEAR1	(1<<1)	/* R/W */
 #define EEAR0	(1<<0)	/* R/W */
 
+#define EEAR	EEARL	/* memory location */
+
 /* EEPROM data register (data to be written/read to/from EEPROM) */
 /* NOTE - BIG ENDIAN ORDER */
 #define EEDR	0x20	/* memory location */
