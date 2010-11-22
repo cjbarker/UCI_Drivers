@@ -2,8 +2,11 @@
  * LAB 4 - Writing Portable Device Drivers       *
  *                                               *
  * Program is a Serial to EEPROM storage device  *
- * with playback characteristcs.  Also includes  *
- * Lab3's timer ISR for LED display/toggle.      *
+ * with playback characteristcs.  UART IS        *
+ * INTERRUPT DRIVEN.                             *
+ *                                               *
+ * Also includes lab3's timer ISR for LED        *
+ * display/toggle.                               *
  *                                               *
  * Reads keys from Spare RS232 and records them  *
  * to the EEPROM.  Additionally, provides LED    *
@@ -26,9 +29,18 @@
 #define UART_BAUD_RATE 9600								/* Bits Per Second */
 #define UART_BAUD_CALC(UART_BAUD_RATE,FOSC) ((FOSC)/((UART_BAUD_RATE)*16l)-1)
 
-volatile enum STATES { stopped=0, started } gRecState;	/* UART recording state */
+/* Hexadecimal for ASCII Character Set Encoding */
+#define CTRL_Z	0x1A
+#define CTRL_Y	0x19
+
+#define BASE_EEPROM_ADDR 0x0
+
+volatile enum STATES { stopped=0, recording, playback } g_rec_state;	/* UART recording state */
 volatile UINT32 g_curr_led = 0;							/* current active LED to light */
 volatile UINT32 g_time_counter = 0; 					/* used for timer to achieve 1Hz */
+volatile UINT32 g_num_eeprom_writes = 0;				/* number of times eeprom write been called */
+volatile UINT32 g_num_eeprom_reads = 0;					/* number of times eeprom read been called */
+volatile UINT8 g_usart_read_buffer;						/* buffer of data read from USART */
 
 BOOL switch_pushed(void)
 {
@@ -63,7 +75,7 @@ void init_timer(void)
 void init_usart(void) 
 {
 	/* Initialize normal asynchronous interrupt driven USART #0 Receiver */
-	gRecState = stopped;
+	g_rec_state = stopped;
 
 	/* enable complete interrupts, data empty interrupt, and receiver & trx mode */
 	write_reg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn | TXENn);	
@@ -98,18 +110,58 @@ void usart_rx_handler(void)
 	/* USART0 receive complete interrupt */
 
 	/* read data from buffer */
-	volatile UINT8 result;
-	write_reg(UDR0, result);
-	
+	g_usart_read_buffer = read_reg(UDR0);
 
-	/* 
-	TODO
-	1) Convert bytes to integer ASCII encoding then ASCII character
-	2) See if cntrl start or stop recording received - update gRecState
-	3) Handle start/stop accordingly if exists if not and recording store characters to EEPROM
-	4) re-enable interrupts
-	*/
+	/* Handles Appropraite Action for State: Recording, Stop, or Playback */
+	if (g_usart_read_buffer == CTRL_Z) {
+		if (g_rec_state == recording) {
+			g_rec_state = stopped;
+		}
+		else {
+			g_rec_state = recording;
+		}
+		g_usart_read_buffer = 0;
+	} 
+	else if (g_usart_read_buffer == CTRL_Y && g_rec_state != playback) {
+		g_rec_state = playback;
+		g_usart_read_buffer = 0;
+	}
+	else {
+		;	/* no state change result received */
+	}
 
+	if (g_usart_read_buffer && g_rec_state == recording) {
+		write_eeprom(BASE_EEPROM_ADDR+g_num_eeprom_writes, g_usart_read_buffer);	/* write results to eeprom */
+		g_num_eeprom_writes += 1;
+	}
+
+	enable_interrupt();				/* global interrupts */
+}
+
+void usart_data_empty_handler(void)
+{
+	/* USART0 data register is empty (transmit buffer ready to receve new data) */
+
+	if (g_rec_state == playback) 
+	{
+		/* Send output back via USART serial communication */
+		if (g_usart_read_buffer) {
+			write_reg(UDR0, g_usart_read_buffer);								/* transmit what was previously read in buffer */
+			g_usart_read_buffer = 0;
+		}
+		else {
+			write_reg(UDR0, read_eeprom(BASE_EEPROM_ADDR+g_num_eeprom_reads));	/* read EEPROM and transmit over USART */
+			g_num_eeprom_reads += 1;
+		}
+	}
+
+	enable_interrupt();				/* global interrupts */
+}
+
+void usart_tx_handler(void)
+{
+	/* USART0 transfer complete interrupt */
+	/* Currently, nothing to do once transfer completes - data empty handler suffices for now */
 	enable_interrupt();				/* global interrupts */
 }
 
@@ -123,6 +175,18 @@ void __vector_26 (void)
 { 
 	/* USART0 receive complete */ 
 	usart_rx_handler();
+}
+
+void __vector_27 (void) 
+{ 
+	/* USART0 data register empty */
+	usart_data_empty_handler();
+}
+
+void __vector_28 (void) 
+{ 
+	/* USART0 transfer complete */ 
+	usart_tx_handler();
 }
 
 int main(void)
