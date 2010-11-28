@@ -41,6 +41,7 @@ volatile UINT32 g_time_counter = 0; 					/* used for timer to achieve 1Hz */
 volatile UINT32 g_num_eeprom_writes = 0;				/* number of times eeprom write been called */
 volatile UINT32 g_num_eeprom_reads = 0;					/* number of times eeprom read been called */
 volatile UINT8 g_usart_read_buffer;						/* buffer of data read from USART */
+volatile UINT8 g_data_empty_enabled = 0;				/* data register empty interrupt */
 
 BOOL switch_pushed(void)
 {
@@ -77,15 +78,15 @@ void init_usart(void)
 	/* Initialize normal asynchronous interrupt driven USART #0 Receiver */
 	g_rec_state = stopped;
 
-	/* enable complete interrupts, data empty interrupt, and receiver & trx mode */
-	write_reg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn | TXENn);	
-
-	/* set frame format: 8 bit character size for frame used by transmitter and receiver with 2 stop bit */
-	write_reg(UCSR0C, USBSn| UCSZn1 | UCSZn0);								
-
 	/* Baud Rate */		
 	write_reg(UBRR0H, (UINT8)UART_BAUD_CALC(UART_BAUD_RATE,FOSC)>>8);
 	write_reg(UBRR0L, (UINT8)UART_BAUD_CALC(UART_BAUD_RATE,FOSC));
+
+	/* set frame format: 8 bit character size for frame used by transmitter and receiver with 2 stop bit */
+	write_reg(UCSR0C, USBSn| UCSZn1 | UCSZn0);	
+
+	/* enable interrupts receiver and trx mode */
+	write_reg(UCSR0B, RXCIEn | TXCIEn | RXENn | TXENn);					
 
 	enable_interrupt();				/* global interrupts */
 }
@@ -110,6 +111,7 @@ void usart_rx_handler(void)
 	/* USART0 receive complete interrupt */
 
 	/* read data from buffer */
+	g_usart_read_buffer = 0;
 	g_usart_read_buffer = read_reg(UDR0);
 
 	/* Handles Appropraite Action for State: Recording, Stop, or Playback */
@@ -133,6 +135,12 @@ void usart_rx_handler(void)
 	if (g_usart_read_buffer && g_rec_state == recording) {
 		write_eeprom(BASE_EEPROM_ADDR+g_num_eeprom_writes, g_usart_read_buffer);	/* write results to eeprom */
 		g_num_eeprom_writes += 1;
+	}
+
+	/* enable data register empty interrupt with rcv and trx interrupts */
+	if (!g_data_empty_enabled) {
+		write_reg(UCSR0B, RXCIEn | TXCIEn | UDRIEn  | RXENn | TXENn);	
+		g_data_empty_enabled = 1;
 	}
 
 	enable_interrupt();				/* global interrupts */
@@ -171,19 +179,19 @@ void __vector_23 (void)
 	timer_handler();
 }
 
-void __vector_26 (void) 
+void __vector_25 (void) 
 { 
 	/* USART0 receive complete */ 
 	usart_rx_handler();
 }
 
-void __vector_27 (void) 
+void __vector_26 (void) 
 { 
 	/* USART0 data register empty */
 	usart_data_empty_handler();
 }
 
-void __vector_28 (void) 
+void __vector_27 (void) 
 { 
 	/* USART0 transfer complete */ 
 	usart_tx_handler();

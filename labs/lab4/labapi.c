@@ -50,11 +50,12 @@ void write_eeprom_restore(UINT8 addr, UINT8 data, UINT8 restore_interrupts)
 	write_reg(EEAR, addr);		/* set addr register */
 	write_reg(EEDR, data);		/* write data register */
 	write_reg(EECR, EEMPE);		/* enable write */
-	write_reg(EECR, EEPE);		/* write eepom */
 
 	if (restore_interrupts) {
 		enable_interrupt();		/* global interrupts */
 	}
+
+	write_reg(EECR, EEPE);		/* write eepom */
 }
 
 UINT8 read_eeprom(UINT8 addr) 
