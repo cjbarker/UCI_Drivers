@@ -82,11 +82,11 @@ void init_usart(void)
 	write_reg(UBRR0H, (UINT8)UART_BAUD_CALC(UART_BAUD_RATE,FOSC)>>8);
 	write_reg(UBRR0L, (UINT8)UART_BAUD_CALC(UART_BAUD_RATE,FOSC));
 
+	/* enable interrupts receiver and trx mode */
+	write_reg(UCSR0B, RXCIEn | TXCIEn | RXENn | TXENn);
+
 	/* set frame format: 8 bit character size for frame used by transmitter and receiver with 2 stop bit */
 	write_reg(UCSR0C, USBSn| UCSZn1 | UCSZn0);	
-
-	/* enable interrupts receiver and trx mode */
-	write_reg(UCSR0B, RXCIEn | TXCIEn | RXENn | TXENn);					
 
 	enable_interrupt();				/* global interrupts */
 }
@@ -149,7 +149,7 @@ void usart_rx_handler(void)
 void usart_data_empty_handler(void)
 {
 	/* USART0 data register is empty (transmit buffer ready to receve new data) */
-
+	
 	if (g_rec_state == playback) 
 	{
 		/* Send output back via USART serial communication */
@@ -157,9 +157,20 @@ void usart_data_empty_handler(void)
 			write_reg(UDR0, g_usart_read_buffer);								/* transmit what was previously read in buffer */
 			g_usart_read_buffer = 0;
 		}
-		else {
-			write_reg(UDR0, read_eeprom(BASE_EEPROM_ADDR+g_num_eeprom_reads));	/* read EEPROM and transmit over USART */
-			g_num_eeprom_reads += 1;
+		else 
+		{
+			volatile UINT8 eeprom_buff = 0;
+			read_eeprom(BASE_EEPROM_ADDR+g_num_eeprom_reads);
+
+			if (eeprom_buff) {
+				g_num_eeprom_reads += 1;
+				write_reg(UDR0, eeprom_buff);	/* read EEPROM and transmit over USART */
+			}
+			else {
+				/* nothing left in eeprom - disable data register empty interrupt until we receive something */
+				write_reg(UCSR0B, RXCIEn | TXCIEn | RXENn | TXENn);
+				g_data_empty_enabled = 0;
+			}
 		}
 	}
 
